@@ -17,7 +17,11 @@ import org.chaoticbits.devactivity.testutil.dbverify.DBVerifyRunner;
 import com.google.gdata.util.ServiceException;
 
 import edu.rit.se.history.httpd.analysis.BayesianPrediction;
+import edu.rit.se.history.httpd.analysis.ComponentChurn;
 import edu.rit.se.history.httpd.analysis.Counterparts;
+import edu.rit.se.history.httpd.analysis.Peach;
+import edu.rit.se.history.httpd.analysis.ProjectChurn;
+import edu.rit.se.history.httpd.analysis.RecentAuthorsAffected;
 import edu.rit.se.history.httpd.analysis.RecentChurn;
 import edu.rit.se.history.httpd.analysis.RecentPIC;
 import edu.rit.se.history.httpd.analysis.TimelineTables;
@@ -63,22 +67,22 @@ public class RebuildHistory {
 		/* --- DOWNLOAD STUFF --- */
 		// downloadGoogleDocs(props); //Nobody but Andy really needs to run this
 		/* --- CLEAN EVERYTHING --- */
-		rebuildSchema();
+		///rebuildSchema();
 		/* --- LOAD STUFF --- */
 		// loadCVEs(dbUtil, props);
-		loadCVEToGit();
-		loadGitLog();
+		///loadCVEToGit();
+		///loadGitLog();
 		loadComponents();
-		loadReleaseHistory();
+		///loadReleaseHistory();
 		// loadCVEToGit(dbUtil, props);
 		/* --- OPTIMIZE & INDEX TABLES --- */
-		optimizeTables();
+		///optimizeTables();
 		/* --- COMPUTE & UPDATE TABLES --- */
-		updateGitRelease();
-		updateChurn();
-		updateComponent();
-		updateSLOC();
-		computeRepoLog();
+		///updateGitRelease();
+		///updateChurn();
+		//updateGitlogfilesComponent();
+		//updateSLOC();
+		///computeRepoLog();
 		computeRecentChurn();
 		/* --- VERIFY --- */
 		verify();
@@ -172,21 +176,21 @@ public class RebuildHistory {
 	}
 
 	private void computeRecentChurn() throws Exception {
-		log.info("Computing recent churn...");
+		/*log.info("Computing recent churn...");
 		new RecentChurn().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
 		log.info("Computing recent PIC...");
 		new RecentPIC().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
-		// log.info("Computing recent Authors Affected..."); /* Not done yet */
-		// new RecentAuthorsAffected().compute(dbUtil,
-		// Long.parseLong(props.getProperty("history.churn.recent.step")));
-		// log.info("Computing PEACh metric..."); /* Not done yet */
-		// new Peach().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
-		// log.info("Computing component churn..."); /* Not done yet*/
-		// new ComponentChurn().compute(dbUtil,
+		 log.info("Computing recent Authors Affected...");  Not done yet 
+		 new RecentAuthorsAffected().compute(dbUtil,
+		 Long.parseLong(props.getProperty("history.churn.recent.step")));*/
+		 //log.info("Computing PEACh metric..."); /* Not done yet */
+		 //new Peach().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
+		 //log.info("Computing component churn..."); /* Not done yet*/
+		 //new ComponentChurn().compute(dbUtil,
 		// Long.parseLong(props.getProperty("history.churn.recent.step")));
 		// log.info("Computing project churn..."); /* Not needed for this paper -Andy*/
-		// new ProjectChurn().compute(dbUtil,
-		// Long.parseLong(props.getProperty("history.churn.recent.step")));
+		//new ProjectChurn().compute(dbUtil,
+		 //Long.parseLong(props.getProperty("history.churn.recent.step")));
 	}
 
 	private void loadCVEToGit() throws Exception {
@@ -241,7 +245,7 @@ public class RebuildHistory {
 		new ComponentParser().parse(dbUtil, new File(datadir, props.getProperty("history.component.paths")));
 	}
 
-	private void updateComponent() throws Exception {
+	private void updateGitlogfilesComponent() throws Exception {
 		log.info("Updating components...");
 		new GitlogfilesComponent().update(dbUtil);
 	}
