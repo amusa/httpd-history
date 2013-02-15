@@ -28,6 +28,9 @@ import edu.rit.se.history.httpd.analysis.TimelineTables;
 import edu.rit.se.history.httpd.dbverify.CodeChurnForAllCommits;
 import edu.rit.se.history.httpd.dbverify.ComponentForAllFilepath;
 import edu.rit.se.history.httpd.dbverify.LOCForAllCommitFilepaths;
+import edu.rit.se.history.httpd.dbverify.PeachForAllCommit;
+import edu.rit.se.history.httpd.dbverify.RecentChurnForAllCommit;
+import edu.rit.se.history.httpd.dbverify.RecentPICForAllCommits;
 import edu.rit.se.history.httpd.parse.CVEToGit;
 import edu.rit.se.history.httpd.parse.CVEsParser;
 import edu.rit.se.history.httpd.parse.ChurnParser;
@@ -72,7 +75,7 @@ public class RebuildHistory {
 		// loadCVEs(dbUtil, props);
 		///loadCVEToGit();
 		///loadGitLog();
-		loadComponents();
+		//loadComponents();
 		///loadReleaseHistory();
 		// loadCVEToGit(dbUtil, props);
 		/* --- OPTIMIZE & INDEX TABLES --- */
@@ -216,6 +219,9 @@ public class RebuildHistory {
 		runner.add(new CodeChurnForAllCommits());
 		runner.add(new ComponentForAllFilepath());
 		runner.add(new LOCForAllCommitFilepaths());
+		runner.add(new RecentChurnForAllCommit());
+		runner.add(new RecentPICForAllCommits());
+		runner.add(new PeachForAllCommit());
 		runner.run();
 	}
 
