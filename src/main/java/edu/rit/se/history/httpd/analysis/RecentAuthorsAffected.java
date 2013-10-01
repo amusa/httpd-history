@@ -11,14 +11,15 @@ public class RecentAuthorsAffected {
 
 	public void compute(DBUtil dbUtil, long recentPeriod) throws Exception {
 		Connection conn = dbUtil.getConnection();
-		String query = "SELECT r.filepath, r.commit,  "      	        		
+		/*String query = "SELECT g.filepath, g.commit,  "      	        		
 			    + "(SELECT COUNT(DISTINCT authoraffected) FROM gitchurnauthorsaffected a " 
 			    + "INNER JOIN repolog _r ON a.commit = _r.commit "
-			    + "WHERE _r.authordate <= r.authordate AND DATEDIFF(r.authordate, _r.authordate) <= ? "
-			    + "AND a.filepath = r.filepath ) AS RecentAuthorsAffected "
-			+ "FROM Repolog r";
+			    + "WHERE _r.authordate <= g.authordate AND DATEDIFF(g.authordate, _r.authordate) <= ? "
+			    + "AND a.filepath = g.filepath ) AS RecentAuthorsAffected "
+			+ "FROM Gitlogfiles g";
+				
+		String upQuery = "UPDATE GitLogFiles SET RecentAuthorsAffected = ? WHERE commit = ? AND filepath = ?"; 
 		
-		String upQuery = "UPDATE GitLogFiles SET RecentAuthorsAffected = ? WHERE commit = ? AND filepath = ?";
 		PreparedStatement ps = conn.prepareStatement(query);
 		PreparedStatement psUpdate = conn.prepareStatement(upQuery);
 		ps.setLong(1, recentPeriod);
@@ -33,6 +34,16 @@ public class RecentAuthorsAffected {
 		}
 		log.debug("Executing update...");
 		psUpdate.executeBatch();
+		*/
+		String query = "UPDATE Gitlogfiles g SET recentAuthorsAffected =   "+    	        		
+			    "(SELECT COUNT(DISTINCT authoraffected) FROM gitchurnauthorsaffected a "+ 
+			    "WHERE a.filepath = g.filepath " + 
+				"AND a.authordate <= g.authordate AND DATEDIFF(g.authordate, a.authordate) <= ? "+
+			    " )";
+		PreparedStatement ps = conn.prepareStatement(query);
+		ps.setLong(1, recentPeriod);
+		log.debug("Executing update...");
+		ps.executeUpdate();
 		conn.close();
 
 	}

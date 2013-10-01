@@ -25,7 +25,7 @@ public class Peach {
 				+ " FROM Repolog r";
 */
 		
-		String query ="UPDATE Gitlogfiles g SET peach = " +  
+		/*String query ="UPDATE Gitlogfiles g SET peach = " +  
 				"( SELECT count(distinct effectiveauthor) FROM gitchurneffectiveauthors a "+ 
 				"			WHERE a.effectiveauthor IN ( "+
 				"								SELECT effectiveauthor FROM gitchurneffectiveauthors b "+
@@ -34,7 +34,7 @@ public class Peach {
 				"			AND (a.commit != g.commit OR a.filepath != g.filepath) "+
                 "            AND a.authordate <= g.authordate AND DATEDIFF(g.authordate, a.authordate) <= ? "+
 				") / EffectiveAuthors ";
-		
+		*/
 		String upEAQuery = "UPDATE Gitlogfiles g SET effectiveAuthors = ( " +
     					"SELECT count(effectiveauthor) FROM gitchurneffectiveauthors c " +
     					 "WHERE c.commit = g.commit AND c.filepath = g.filepath " +    					
@@ -52,13 +52,15 @@ public class Peach {
                 		        "FROM Gitlogfiles g ";
 
 		String upQuery = "UPDATE gitlogfiles SET peach = ? WHERE commit = ? AND filepath = ?";
+		
 		PreparedStatement psEAUpdate = conn.prepareStatement(upEAQuery);
 		PreparedStatement psPeachQuery = conn.prepareStatement(peachQuery);
 		PreparedStatement psUpdate = conn.prepareStatement(upQuery);
 		
 		log.debug("Updating effective authors...");
 		psEAUpdate.executeUpdate();
-		/*log.debug("Executing Peach Query...");
+		new GitOptimizer().optimize(dbUtil);
+		log.debug("Executing Peach Query...");
 		psPeachQuery.setLong(1, recentPeriod);
 		ResultSet rs = psPeachQuery.executeQuery();		 
 		log.debug("Processing results...");
@@ -68,12 +70,16 @@ public class Peach {
 			psUpdate.setString(3, rs.getString("filepath"));
 			psUpdate.addBatch();
 		}
+		
+		new GitOptimizer().optimize(dbUtil);
 		log.debug("Executing update...");
-		psUpdate.executeBatch();*/
+		psUpdate.executeBatch();
+		
+		/*new GitOptimizer().optimize(dbUtil);
 		log.debug("Executing Peach update...");
 		PreparedStatement psPeachUpdate = conn.prepareStatement(query);
 		psPeachUpdate.setLong(1, recentPeriod);
-		psPeachUpdate.executeUpdate();
+		psPeachUpdate.executeUpdate();*/
 		conn.close();
 
 	}
