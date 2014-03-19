@@ -19,9 +19,9 @@ import com.google.gdata.util.ServiceException;
 import edu.rit.se.history.httpd.analysis.BayesianPrediction;
 import edu.rit.se.history.httpd.analysis.ComponentChurn;
 import edu.rit.se.history.httpd.analysis.Counterparts;
-import edu.rit.se.history.httpd.analysis.GitOptimizer;
 import edu.rit.se.history.httpd.analysis.Peach;
 import edu.rit.se.history.httpd.analysis.ProjectChurn;
+import edu.rit.se.history.httpd.analysis.RecentAuthorsAffected;
 import edu.rit.se.history.httpd.analysis.RecentAuthorsAffected;
 import edu.rit.se.history.httpd.analysis.RecentChurn;
 import edu.rit.se.history.httpd.analysis.RecentPIC;
@@ -82,8 +82,8 @@ public class RebuildHistory {
 		/* --- OPTIMIZE & INDEX TABLES --- */
 		///optimizeTables();
 		/* --- COMPUTE & UPDATE TABLES --- */
-		//updateGitRelease();
-		//updateChurn();
+		///updateGitRelease();
+		///updateChurn();
 		//updateGitlogfilesComponent();
 		//updateSLOC();
 		///computeRepoLog();
@@ -180,22 +180,24 @@ public class RebuildHistory {
 	}
 
 	private void computeRecentChurn() throws Exception {
-		optimizeGitlogfiles();
-		log.info("Computing recent churn...");
+		/*log.info("Computing recent churn...");
 		new RecentChurn().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
 		log.info("Computing recent PIC...");
 		new RecentPIC().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
-		optimizeGitlogfiles(); 
-		log.info("Computing recent Authors Affected..."); // Not done yet 
-		new RecentAuthorsAffected().compute(dbUtil,
-		 Long.parseLong(props.getProperty("history.churn.recent.step")));
-		 optimizeGitlogfiles();
-		 log.info("Computing PEACh metric..."); /* Not done yet */
-		 new Peach().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
+		new RecentChurn().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
+		log.info("Computing recent PIC...");
+		new RecentPIC().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
+		// log.info("Computing recent Authors Affected..."); /* Not done yet */
+		// new RecentAuthorsAffected().compute(dbUtil,
+		// Long.parseLong(props.getProperty("history.churn.recent.step")));
+		// log.info("Computing PEACh metric..."); /* Not done yet */
+		// new Peach().compute(dbUtil, Long.parseLong(props.getProperty("history.churn.recent.step")));
+		// log.info("Computing component churn..."); /* Not done yet*/
+		// new ComponentChurn().compute(dbUtil,
 		 optimizeGitlogfiles();
 		log.info("Computing component churn..."); /* Not done yet*/
-		 new ComponentChurn().compute(dbUtil,
-		Long.parseLong(props.getProperty("history.churn.recent.step")));
+		// new ProjectChurn().compute(dbUtil,
+		// Long.parseLong(props.getProperty("history.churn.recent.step")));
 		log.info("Computing project churn..."); /* Not needed for this paper -Andy*/
 		new ProjectChurn().compute(dbUtil,
 		Long.parseLong(props.getProperty("history.churn.recent.step")));
