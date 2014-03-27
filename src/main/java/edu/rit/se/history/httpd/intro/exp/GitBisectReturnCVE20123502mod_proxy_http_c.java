@@ -7,28 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * CVE-2011-3607: server/util.c
+ * CVE-2012-3502:modules/proxy/mod_proxy_http.c
  * 
- * Fix commit: d265c519032088ae939290c53f91207c115897b1
+ * Fix commit: ef9d7be0ee48b4cad7abdbb3d710d7966093973c
  * 
  * Origin commit: 5430f8800f5fffd57e7421dee0ac9de8ca4f9573
  * 
  * <pre>
- *  git bisect start d265c519032088ae939290c53f91207c115897b1^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- server/util.c
- *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20113607
+ *  git bisect start ef9d7be0ee48b4cad7abdbb3d710d7966093973c^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/proxy/mod_proxy_http.c
+ *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20123502mod_proxy_http_c
  * </pre>
  * 
  * @author Ayemi Musa
  * 
  */
-public class GitBisectReturnCVE20113607 {
+public class GitBisectReturnCVE20123502mod_proxy_http_c {
 
 	private static final int GOOD_RETURN_CODE = 0;
 	private static final int BAD_RETURN_CODE = 1;
 	private static final int SKIP_RETURN_CODE = 125;
 
-	private static final String CVE = "CVE-2011-3607";
-	private static final String FILE = "server/util.c";
+	private static final String CVE = "CVE-2012-3502";
+	private static final String FILE = "modules/proxy/mod_proxy_http.c";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -75,23 +75,20 @@ public class GitBisectReturnCVE20113607 {
 		in.close();
 		/**
 		 * if the file contains this code, then it's vulnerable
-		 *  
+		 * 
 		 */
-		if //
-		(has(stringBuffer, ""
-				+ //
-				"else if (no < nmatch && pmatch[no].rm_so < pmatch[no].rm_eo) {"
-				 + "")
-				 && 
-		(has(stringBuffer, "" + //
-				"len += pmatch[no].rm_eo - pmatch[no].rm_so;" + // contexts				
-				""))
-				&& 
-		(!has(stringBuffer, "" + //
-				"if (APR_SIZE_MAX - len <= pmatch[no].rm_eo - pmatch[no].rm_so)" + // contexts				
-				""))
+		String context = "" + //
+				"force10 = 1;"+
+         "p_conn->close++;" +
+				"";
 
-		) {
+		String bad = "";
+
+		String good = "" + //
+				"p_conn->close = 1;"
+				+ "";
+
+		if (has(stringBuffer, context) && !(has(stringBuffer, good))) {
 			isVulnerable = true;
 		} else {
 			isVulnerable = false; // no such context is found, must have pre-dated the vulnerability

@@ -7,28 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * CVE-2011-3607: server/util.c
+ * CVE-2003-0392: modules/dav/main/mod_dav.c
  * 
- * Fix commit: d265c519032088ae939290c53f91207c115897b1
+ * Fix commit: 7608e940c1821dc70907adf6d3c48abdd729476b
  * 
  * Origin commit: 5430f8800f5fffd57e7421dee0ac9de8ca4f9573
  * 
  * <pre>
- *  git bisect start d265c519032088ae939290c53f91207c115897b1^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- server/util.c
- *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20113607
+ *  git bisect start 7608e940c1821dc70907adf6d3c48abdd729476b^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/dav/main/mod_dav.c
+ *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20131896
  * </pre>
  * 
  * @author Ayemi Musa
  * 
  */
-public class GitBisectReturnCVE20113607 {
+public class GitBisectReturnCVE20131896 {
 
 	private static final int GOOD_RETURN_CODE = 0;
 	private static final int BAD_RETURN_CODE = 1;
 	private static final int SKIP_RETURN_CODE = 125;
 
-	private static final String CVE = "CVE-2011-3607";
-	private static final String FILE = "server/util.c";
+	private static final String CVE = "CVE-2013-1896";
+	private static final String FILE = "modules/dav/main/mod_dav.c";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -75,22 +75,33 @@ public class GitBisectReturnCVE20113607 {
 		in.close();
 		/**
 		 * if the file contains this code, then it's vulnerable
-		 *  
+		 * 
 		 */
-		if //
-		(has(stringBuffer, ""
-				+ //
-				"else if (no < nmatch && pmatch[no].rm_so < pmatch[no].rm_eo) {"
-				 + "")
-				 && 
-		(has(stringBuffer, "" + //
-				"len += pmatch[no].rm_eo - pmatch[no].rm_so;" + // contexts				
-				""))
-				&& 
-		(!has(stringBuffer, "" + //
-				"if (APR_SIZE_MAX - len <= pmatch[no].rm_eo - pmatch[no].rm_so)" + // contexts				
-				""))
+		
+		String bad = "" + //
+				"if (dav_get_provider(lookup.rnew) == NULL) {"+
+		         "return dav_error_response(r, HTTP_METHOD_NOT_ALLOWED,"+
+		                                   "\"DAV not enabled for Destination URI.\");"+
+		     "}"+
+		      ""+
+		      "/* Resolve destination resource */" +
 
+						"";
+		
+		String good = "" + //
+				"if (conf->provider == NULL) {"+
+		         "return dav_new_error(r->pool, HTTP_METHOD_NOT_ALLOWED, 0, 0,"+
+		                              "apr_psprintf(r->pool,"+
+		 				          "\"DAV not enabled for %s\","+
+		 					  "ap_escape_html(r->pool, r->uri)));"+
+		     "}" + 
+						"";
+		
+		if (//
+		(has(stringBuffer, bad) && 
+		(!has(stringBuffer, good))
+
+		) 
 		) {
 			isVulnerable = true;
 		} else {

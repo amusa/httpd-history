@@ -7,28 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * CVE-2011-3607: server/util.c
+ * CVE-2012-3499: modules/generators/mod_status.c
  * 
- * Fix commit: d265c519032088ae939290c53f91207c115897b1
+ * Fix commit: 71c37194fc30a1ae09403850356568500b7f7f94
  * 
  * Origin commit: 5430f8800f5fffd57e7421dee0ac9de8ca4f9573
  * 
  * <pre>
- *  git bisect start d265c519032088ae939290c53f91207c115897b1^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- server/util.c
- *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20113607
+ *  git bisect start 71c37194fc30a1ae09403850356568500b7f7f94^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/generators/mod_status.c
+ *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20123499mod_status_c
  * </pre>
  * 
  * @author Ayemi Musa
  * 
  */
-public class GitBisectReturnCVE20113607 {
+public class GitBisectReturnCVE20123499mod_status_c {
 
 	private static final int GOOD_RETURN_CODE = 0;
 	private static final int BAD_RETURN_CODE = 1;
 	private static final int SKIP_RETURN_CODE = 125;
 
-	private static final String CVE = "CVE-2011-3607";
-	private static final String FILE = "server/util.c";
+	private static final String CVE = "CVE-2012-3499";
+	private static final String FILE = "modules/generators/mod_status.c";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -75,23 +75,22 @@ public class GitBisectReturnCVE20113607 {
 		in.close();
 		/**
 		 * if the file contains this code, then it's vulnerable
-		 *  
+		 * 
 		 */
-		if //
-		(has(stringBuffer, ""
-				+ //
-				"else if (no < nmatch && pmatch[no].rm_so < pmatch[no].rm_eo) {"
-				 + "")
-				 && 
-		(has(stringBuffer, "" + //
-				"len += pmatch[no].rm_eo - pmatch[no].rm_so;" + // contexts				
-				""))
-				&& 
-		(!has(stringBuffer, "" + //
-				"if (APR_SIZE_MAX - len <= pmatch[no].rm_eo - pmatch[no].rm_so)" + // contexts				
-				""))
-
-		) {
+		String context =""+ //
+		           "\"</head><body>\\n"+
+                   "\"<h1>Apache Server Status for \", r);";
+		
+		String bad = "" + //
+				"ap_rvputs(r, ap_get_server_name(r), \" (via \", r->connection->local_ip,"+
+				"";
+		
+		String good = "" + //
+				"ap_rvputs(r, ap_escape_html(r->pool, ap_get_server_name(r)),"+
+                   "\" (via \", r->connection->local_ip," + 
+						"";
+		
+		if (has(stringBuffer, context) && has(stringBuffer, bad) && !(has(stringBuffer, good))){
 			isVulnerable = true;
 		} else {
 			isVulnerable = false; // no such context is found, must have pre-dated the vulnerability

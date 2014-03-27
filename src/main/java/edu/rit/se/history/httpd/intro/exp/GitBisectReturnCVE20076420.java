@@ -7,28 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * CVE-2011-3607: server/util.c
+ * CVE-2007-6420:modules/proxy/mod_proxy_balancer.c
  * 
- * Fix commit: d265c519032088ae939290c53f91207c115897b1
+ * Fix commit: ad41158e0ae128694b3fb4298bdb6b90bc3cb673
  * 
  * Origin commit: 5430f8800f5fffd57e7421dee0ac9de8ca4f9573
  * 
  * <pre>
- *  git bisect start d265c519032088ae939290c53f91207c115897b1^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- server/util.c
- *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20113607
+ *  git bisect start ad41158e0ae128694b3fb4298bdb6b90bc3cb673^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/proxy/mod_proxy_balancer.c
+ *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20076420
  * </pre>
  * 
  * @author Ayemi Musa
  * 
  */
-public class GitBisectReturnCVE20113607 {
+public class GitBisectReturnCVE20076420{
 
 	private static final int GOOD_RETURN_CODE = 0;
 	private static final int BAD_RETURN_CODE = 1;
 	private static final int SKIP_RETURN_CODE = 125;
 
-	private static final String CVE = "CVE-2011-3607";
-	private static final String FILE = "server/util.c";
+	private static final String CVE = "CVE-2007-6420";
+	private static final String FILE = "modules/proxy/mod_proxy_balancer.c";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -75,23 +75,26 @@ public class GitBisectReturnCVE20113607 {
 		in.close();
 		/**
 		 * if the file contains this code, then it's vulnerable
-		 *  
+		 * 
 		 */
-		if //
-		(has(stringBuffer, ""
-				+ //
-				"else if (no < nmatch && pmatch[no].rm_so < pmatch[no].rm_eo) {"
-				 + "")
-				 && 
-		(has(stringBuffer, "" + //
-				"len += pmatch[no].rm_eo - pmatch[no].rm_so;" + // contexts				
-				""))
-				&& 
-		(!has(stringBuffer, "" + //
-				"if (APR_SIZE_MAX - len <= pmatch[no].rm_eo - pmatch[no].rm_so)" + // contexts				
-				""))
-
-		) {
+		String context =""+ //		           
+     "/* post_config hook: */"+
+ "static int balancer_init(apr_pool_t *p, apr_pool_t *plog,"+
+                          "apr_pool_t *ptemp, server_rec *s)"+
+ "{"+
+     "void *data;"+
+     "const char *userdata_key = \"mod_proxy_balancer_init\";"
+		           +"";
+		
+		String bad = "" + //
+				""+
+				"";
+		
+		String good = "" + //
+				"" + 
+						"";
+		
+		if (!has(stringBuffer, context) ){
 			isVulnerable = true;
 		} else {
 			isVulnerable = false; // no such context is found, must have pre-dated the vulnerability
