@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.chaoticbits.devactivity.DBUtil;
 
@@ -39,10 +41,36 @@ public class GitLogParser {
 		Scanner scanner = new Scanner(gitLog);
 		log.debug("Scanning the log...");
 		scanner.nextLine();
+		
+		Pattern pattern;
+		Matcher matcher;
+	 
+		String emailRex = "([_A-Za-z0-9-]+)@([A-Za-z0-9]+)(\\.[A-Za-z0-9]+)";
+				
+				//"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		pattern = Pattern.compile(emailRex);
+		
+				
+				//"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+				
+				        //    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+		
+		
 		while (scanner.hasNextLine()) {
 			String commit = scanner.nextLine();
 			String authorName = scanner.nextLine();
-			String authorEmail = scanner.nextLine();
+			String emailLine = scanner.nextLine();
+			matcher = pattern.matcher(emailLine);
+			String authorEmail=null;
+			if(matcher.find()){
+				authorEmail = matcher.group(0);
+            System.out.println("found email: "+authorEmail);
+			}else{
+				System.out.println("Error: no match!" +commit + " "+emailLine);
+				System.exit(1);
+			}
+			
 			String authorDate = scanner.nextLine();
 			String parent = scanner.nextLine();
 			String subject = scanner.nextLine();
@@ -64,6 +92,8 @@ public class GitLogParser {
 			}
 			parseFileChanges(conn, commit, bodyLines, ps2);
 			int i = 1;
+			if(authorEmail.length()>45)
+				System.out.println("Commit: "+commit+ " AuthorName: "+authorName+ " AuthorEmail: "+authorEmail+ " Parent: "+parent+ " Subject: "+ subject+ " Body: "+body+ " NumSignedOffBys: "+numSignedOffBys);
 			ps.setString(i++, commit);
 			ps.setString(i++, authorName);
 			ps.setString(i++, authorEmail);

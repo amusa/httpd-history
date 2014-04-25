@@ -1,4 +1,4 @@
-package edu.rit.se.history.httpd.intro.exp;
+
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -7,28 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * CVE-2013-2249:modules/session/mod_session.c
+ * CVE-2012-3499: modules/mappers/mod_imagemap.c
  * 
- * Fix commit: 41f25c7f31c6aefca00b1221baa8667774eeaa91
+ * Fix commit: 71c37194fc30a1ae09403850356568500b7f7f94
  * 
  * Origin commit: 5430f8800f5fffd57e7421dee0ac9de8ca4f9573
  * 
  * <pre>
- *  git bisect start 41f25c7f31c6aefca00b1221baa8667774eeaa91^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/session/mod_session.c
- *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20132249mod_session_c
+ *  git bisect start 71c37194fc30a1ae09403850356568500b7f7f94^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/mappers/mod_imagemap.c
+ *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20123499mod_imagemap_c
  * </pre>
  * 
  * @author Ayemi Musa
  * 
  */
-public class GitBisectReturnCVE20132249mod_session_c {
+public class GitBisectReturnCVE20123499mod_imagemap_c {
 
 	private static final int GOOD_RETURN_CODE = 0;
 	private static final int BAD_RETURN_CODE = 1;
 	private static final int SKIP_RETURN_CODE = 125;
 
-	private static final String CVE = "CVE-2013-2249";
-	private static final String FILE = "modules/session/mod_session.c";
+	private static final String CVE = "CVE-2012-3499";
+	private static final String FILE = "modules/mappers/mod_imagemap.c";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -77,20 +77,20 @@ public class GitBisectReturnCVE20132249mod_session_c {
 		 * if the file contains this code, then it's vulnerable
 		 * 
 		 */
-		String context = "" + //
-				"zz->pool = r->pool;" + 
-				"zz->entries = apr_table_make(zz->pool, 10);" +
-				"";
-
+		String context =""+ //
+		           "else if (!strcasecmp(menu, \"semiformatted\")) {"+
+         "ap_rvputs(r, \"<pre>          <a href=\\\"\", href, \"\\\">\", text,"+
+		           "";
+		
 		String bad = "" + //
-				"zz->uuid = (apr_uuid_t *) apr_pcalloc(zz->pool, sizeof(apr_uuid_t));"+
-         "apr_uuid_get(zz->uuid);" + 
+				""+
 				"";
-
+		
 		String good = "" + //
-				"z->dirty = 1;" + "";
-
-		if (has(stringBuffer, bad)&& (!has(stringBuffer, good))) {
+				"ap_rvputs(r, \"<pre>          <a href=\\\"\", ehref, \"\\\">\", etext," + 
+						"";
+		
+		if (has(stringBuffer, context) && has(stringBuffer, bad) && !(has(stringBuffer, good))){
 			isVulnerable = true;
 		} else {
 			isVulnerable = false; // no such context is found, must have pre-dated the vulnerability

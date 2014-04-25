@@ -78,11 +78,12 @@ public class GitBisectReturnCVE20123499mod_status_c {
 		 * 
 		 */
 		String context =""+ //
-		           "\"</head><body>\\n"+
-                   "\"<h1>Apache Server Status for \", r);";
+		           "\"<h1>Apache Server Status for \", r);"+
+         "ap_rvputs(r, ap_get_server_name(r), \" (via \", r->connection->local_ip,"+
+		           "";
 		
 		String bad = "" + //
-				"ap_rvputs(r, ap_get_server_name(r), \" (via \", r->connection->local_ip,"+
+				""+
 				"";
 		
 		String good = "" + //
@@ -90,7 +91,7 @@ public class GitBisectReturnCVE20123499mod_status_c {
                    "\" (via \", r->connection->local_ip," + 
 						"";
 		
-		if (has(stringBuffer, context) && has(stringBuffer, bad) && !(has(stringBuffer, good))){
+		if (has(stringBuffer, context) && !(has(stringBuffer, good))){
 			isVulnerable = true;
 		} else {
 			isVulnerable = false; // no such context is found, must have pre-dated the vulnerability

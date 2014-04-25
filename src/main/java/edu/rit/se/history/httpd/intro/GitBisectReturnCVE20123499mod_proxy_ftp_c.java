@@ -7,28 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * CVE-2003-0392: modules/dav/main/mod_dav.c
+ * CVE-2012-3499: modules/proxy/mod_proxy_ftp.c
  * 
- * Fix commit: 7608e940c1821dc70907adf6d3c48abdd729476b
+ * Fix commit: 71c37194fc30a1ae09403850356568500b7f7f94
  * 
  * Origin commit: 5430f8800f5fffd57e7421dee0ac9de8ca4f9573
  * 
  * <pre>
- *  git bisect start 7608e940c1821dc70907adf6d3c48abdd729476b^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/dav/main/mod_dav.c
- *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20131896
+ *  git bisect start 71c37194fc30a1ae09403850356568500b7f7f94^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/proxy/mod_proxy_ftp.c
+ *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20123499mod_imagemap_c
  * </pre>
  * 
  * @author Ayemi Musa
  * 
  */
-public class GitBisectReturnCVE20131896 {
+public class GitBisectReturnCVE20123499mod_proxy_ftp_c {
 
 	private static final int GOOD_RETURN_CODE = 0;
 	private static final int BAD_RETURN_CODE = 1;
 	private static final int SKIP_RETURN_CODE = 125;
 
-	private static final String CVE = "CVE-2013-1896";
-	private static final String FILE = "modules/dav/main/mod_dav.c";
+	private static final String CVE = "CVE-2012-3499";
+	private static final String FILE = "modules/proxy/mod_proxy_ftp.c";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -77,32 +77,22 @@ public class GitBisectReturnCVE20131896 {
 		 * if the file contains this code, then it's vulnerable
 		 * 
 		 */
+		String context =""+ //
+		           "\"<a href=\\\"/\\\">%s</a>/%s\","+
+                 "site, basedir, escpath, site, basedir, escpath, site, str);"+
+		           "";
 		
 		String bad = "" + //
-				"if (dav_get_provider(lookup.rnew) == NULL) {"+
-		         "return dav_error_response(r, HTTP_METHOD_NOT_ALLOWED,"+
-		                                   "\"DAV not enabled for Destination URI.\");"+
-		     "}"+
-		      ""+
-		      "/* Resolve destination resource */" +
-
-						"";
+				""+
+				"";
 		
 		String good = "" + //
-				"if (conf->provider == NULL) {"+
-		         "return dav_new_error(r->pool, HTTP_METHOD_NOT_ALLOWED, 0, 0,"+
-		                              "apr_psprintf(r->pool,"+
-		 				          "\"DAV not enabled for %s\","+
-		 					  "ap_escape_html(r->pool, r->uri)));"+
-		     "}" + 
+				"ap_escape_html(p, site), basedir, escpath,"+
+                 "ap_escape_uri(p, site), basedir, escpath,"+
+                 "ap_escape_uri(p, site), str);" + 
 						"";
 		
-		if (//
-		(has(stringBuffer, bad) && 
-		(!has(stringBuffer, good))
-
-		) 
-		) {
+		if (has(stringBuffer, context) && !(has(stringBuffer, good))){
 			isVulnerable = true;
 		} else {
 			isVulnerable = false; // no such context is found, must have pre-dated the vulnerability

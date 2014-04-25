@@ -7,28 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * CVE-2012-3499: modules/mappers/mod_imagemap.c
+ * CVE-2012-3499: modules/proxy/mod_proxy_balancer.c
  * 
  * Fix commit: 71c37194fc30a1ae09403850356568500b7f7f94
  * 
  * Origin commit: 5430f8800f5fffd57e7421dee0ac9de8ca4f9573
  * 
  * <pre>
- *  git bisect start 71c37194fc30a1ae09403850356568500b7f7f94^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/mappers/mod_imagemap.c
- *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20123499mod_imagemap_c
+ *  git bisect start 71c37194fc30a1ae09403850356568500b7f7f94^ 5430f8800f5fffd57e7421dee0ac9de8ca4f9573 -- modules/proxy/mod_proxy_balancer.c
+ *  git bisect run java -cp ../httpd-history/src/main/java/ edu.rit.se.history.httpd.intro.exp.GitBisectReturnCVE20123499mod_proxy_balancer_c
  * </pre>
  * 
  * @author Ayemi Musa
  * 
  */
-public class GitBisectReturnCVE20123499mod_imagemap_c {
+public class GitBisectReturnCVE20123499mod_proxy_balancer_c {
 
 	private static final int GOOD_RETURN_CODE = 0;
 	private static final int BAD_RETURN_CODE = 1;
 	private static final int SKIP_RETURN_CODE = 125;
 
 	private static final String CVE = "CVE-2012-3499";
-	private static final String FILE = "modules/mappers/mod_imagemap.c";
+	private static final String FILE = "modules/proxy/mod_proxy_balancer.c";
 
 	public static void main(String[] args) {
 		if (args.length > 0) {
@@ -78,21 +78,20 @@ public class GitBisectReturnCVE20123499mod_imagemap_c {
 		 * 
 		 */
 		String context =""+ //
-		           "referer = apr_table_get(r->headers_in, \"Referer\");"+
-          "if (referer && *referer) {"+
-             "return ap_escape_html(r->pool, referer);";
+		           "ap_rputs(\"<body><h1>Load Balancer Manager for \", r);"+
+         "ap_rvputs(r, ap_get_server_name(r), \"</h1>\\n\\n\", NULL);"+
+		           "";
 		
 		String bad = "" + //
-				"ap_rvputs(r, \"<pre>(Default) <a href=\\\"\", href, \\\"\">\", text,"+
-                "\"</a></pre>\\n\", NULL);"+
+				""+
 				"";
 		
 		String good = "" + //
-				"ehref = ap_escape_uri(r->pool, href);"+
-     "etext = ap_escape_html(r->pool, text);" + 
+				"ap_rvputs(r, ap_escape_html(r->pool, ap_get_server_name(r)),"+
+                   "\"</h1>\\n\\n\", NULL);" + 
 						"";
 		
-		if (has(stringBuffer, context) && has(stringBuffer, bad) && !(has(stringBuffer, good))){
+		if (has(stringBuffer, context) && !(has(stringBuffer, good))){
 			isVulnerable = true;
 		} else {
 			isVulnerable = false; // no such context is found, must have pre-dated the vulnerability
