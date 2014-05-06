@@ -6,20 +6,12 @@ setwd("C:\\data\\httpd\\experience_report\\new")
 
 
 # load the csv file
-#httpdMonthlyAnalysis <- read.csv("monthly_project_analysis_gitlog.csv", header=TRUE, sep=",")
-#httpdMonthlyAnalysis <- read.csv("monthly_project_analysis_gitlog_cleaned.csv", header=TRUE, sep=",")
-httpdMonthlyAnalysis <- read.csv("monthly_project_analysis_gitlog_cleaned2.csv", header=TRUE, sep=",")
+httpdMonthlyAnalysis <- read.csv("monthly_project_analysis_gitlog_filtered.csv", header=TRUE, sep=",")
 
 
 data<-data.frame(NewAuthors=httpdMonthlyAnalysis$new_authors,
 VCCs=httpdMonthlyAnalysis$no_vcc, VCCRatio=httpdMonthlyAnalysis$vcc_ratio
 )
-
-httpdMonthlyAnalysis$new_authors
-httpdMonthlyAnalysis$no_vcc
-httpdMonthlyAnalysis$vcc_ratio
-httpdMonthlyAnalysis$dev_turnaround
-
 
 # Kendal Co-linearity
 cor.test(httpdMonthlyAnalysis$new_authors, httpdMonthlyAnalysis$no_vcc, method="kendall",na.rm=FALSE)
@@ -34,7 +26,7 @@ cor.test(httpdMonthlyAnalysis$dev_turnaround, httpdMonthlyAnalysis$vcc_ratio, me
 
 
 # set the output type and size -- good for standardizing outputs
-jpeg("monthly_analysis_new.png")
+jpeg("monthly_analysis_filtered.png")
 
 
 boxplot(data, las = 1, names = c("New Authors","VCCs", "Ratio"))
@@ -52,7 +44,7 @@ dev.off() # writes the SVG file to the working directory
 
 
 # set the output type and size -- good for standardizing outputs
-jpeg("monthly_analysis_turnaround.png")
+jpeg("monthly_analysis_turnaround_filtered.png")
 
 data_turnaround<-data.frame(TurnAround=httpdMonthlyAnalysis$dev_turnaround, VCCRatio=httpdMonthlyAnalysis$vcc_ratio)
 
@@ -71,7 +63,7 @@ dev.off() # writes the SVG file to the working directory
 
 
 # set the output type and size -- good for standardizing outputs
-jpeg("monthly_analysis_new_author.png")
+jpeg("monthly_analysis_new_author_filtered.png")
 
 data_author<-data.frame(NewAuthors=httpdMonthlyAnalysis$new_authors)
 
@@ -89,7 +81,7 @@ dev.off() # writes the SVG file to the working directory
 
 
 # set the output type and size -- good for standardizing outputs
-jpeg("monthly_analysis_new_vcc.png")
+jpeg("monthly_analysis_new_vcc_filtered.png")
 
 data_vcc<-data.frame(NewAuthors=httpdMonthlyAnalysis$no_vcc)
 boxplot(data_vcc, las = 1, names = c("VCC"))
@@ -105,7 +97,7 @@ mtext(text="Monthly Analysis - VCC",
 dev.off() # writes the SVG file to the working directory
 
 # set the output type and size -- good for standardizing outputs
-jpeg("monthly_analysis_new_vccratio.png")
+jpeg("monthly_analysis_new_vccratio_filtered.png")
 
 data_ratio<-data.frame(NewAuthors=httpdMonthlyAnalysis$vcc_ratio)
 boxplot(data_ratio, las = 1, names = c("VCC Ratio"))

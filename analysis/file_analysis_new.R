@@ -1,6 +1,3 @@
-library(lattice)
- 
-
 # Clear all existing variables from memory
 rm(list=ls())
 
@@ -16,20 +13,15 @@ association <- function(vulnerable, neutral){
 
 
 # load the csv file
-fileAnalysis <- data.frame(read.csv("file_analysis_gitlog.csv", header=TRUE, sep=","))
-fileAnalysisNonVCC <- data.frame(read.csv("file_analysis_nonvcc_gitlog.csv", header=TRUE, sep=","))
+fileAnalysis <- data.frame(read.csv("file_anlysis_vuln_gitlog.csv", header=TRUE, sep=","))
+fileAnalysisNonVCC <- data.frame(read.csv("file_anlysis_neut_gitlog.csv", header=TRUE, sep=","))
 
 
 ###### File Experience ########
 print("File Experience")
 vulnerable <- fileAnalysis$FileCommits
 neutral <- fileAnalysisNonVCC$FileCommits
-
 association(vulnerable, neutral)
-
-boxdata<-data.frame(VCC=vulnerable, Neutral=neutral)
-jpeg("file_experience_new.png")
-boxplot(boxdata, las = 1, names = c("VCC","Neutral"))
 
 
 
@@ -39,19 +31,12 @@ vulnerable <- fileAnalysis$Dir
 neutral <- fileAnalysisNonVCC$Dir
 association(vulnerable, neutral)
 
-boxdata<-data.frame(VCC=vulnerable, Neutral=neutral)
-boxplot(boxdata, las = 1, names = c("VCC","Neutral"))
-
-
 
 ###### File 30Day########
 print("File 30Day")
 vulnerable <- fileAnalysis$ttDay	
 neutral <- fileAnalysisNonVCC$ttDay
 association(vulnerable, neutral)
-
-boxdata<-data.frame(VCC=vulnerable, Neutral=neutral)
-boxplot(boxdata, las = 1, names = c("VCC","Neutral"))
 
 
 ###### File 60Day########
@@ -60,9 +45,6 @@ vulnerable <- fileAnalysis$stDay
 neutral <- fileAnalysisNonVCC$stDay
 association(vulnerable, neutral)
 
-boxdata<-data.frame(VCC=vulnerable, Neutral=neutral)
-boxplot(boxdata, las = 1, names = c("VCC","Neutral"))
-
 
 
 ###### File 90Day########
@@ -70,14 +52,3 @@ print("File 90Day")
 vulnerable <- fileAnalysis$ntDay
 neutral <- fileAnalysisNonVCC$ntDay
 association(vulnerable, neutral)
-
-boxdata<-data.frame(VCC=vulnerable, Neutral=neutral)
-boxplot(boxdata, las = 1, names = c("VCC","Neutral"))
-
-
-
-
-
-
-
-
