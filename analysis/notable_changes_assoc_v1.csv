@@ -1,0 +1,30 @@
+# Clear all existing variables from memory
+rm(list=ls())
+
+# Set working directory for the csv file
+setwd("C:\\data\\httpd")
+
+association <- function(vulnerable, neutral){
+  cat("Vuln. Mean:\t",mean(vulnerable, na.rm=TRUE),"\n")
+  cat("Neutral Mean:\t",mean(neutral, na.rm=TRUE),"\n")
+  wilcox.test(vulnerable,neutral) 
+}
+
+
+
+NotableChanges <- read.csv("notable_changes_v1.csv", header=TRUE, sep=",")
+
+###### Mail Responses########
+print("Mail Responses")
+vulnerable <- NotableChanges$Responses[NotableChanges$VCC=="Yes"]
+neutral <- NotableChanges$Responses[NotableChanges$VCC=="No"]
+association(vulnerable, neutral)
+
+
+###### Mail Responders########
+print("Mail Responders")
+
+vulnerable <- NotableChanges$Responders[NotableChanges$VCC=="Yes"]
+neutral <- NotableChanges$Responders[NotableChanges$VCC=="No"]
+association(vulnerable, neutral)
+

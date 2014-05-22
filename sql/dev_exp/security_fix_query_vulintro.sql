@@ -7,7 +7,7 @@ SELECT commit, authoremail, authordate,
 									 SELECT COUNT(commit) 
 									      FROM gitlog g2 
 									               WHERE g2.commit IN 
-												  (SELECT vcc FROM vcc_intro)
+												  (SELECT fix FROM vcc_intro)
 									               AND g2.authoremail = g1.authoremail
 									               AND g2.authordate <= g1.authordate
 									               AND g2.commit <> g1.commit
@@ -19,4 +19,3 @@ SELECT commit, authoremail, authordate,
 	and g1.authordate=t1.authordate
 set
     g1.securityfix  = t1.securityfix;
-

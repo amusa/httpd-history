@@ -47,16 +47,8 @@ public class GitLogParser {
 	 
 		String emailRex = "([_A-Za-z0-9-]+)@([A-Za-z0-9]+)(\\.[A-Za-z0-9]+)";
 				
-				//"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 		pattern = Pattern.compile(emailRex);
-		
-				
-				//"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-				
-				        //    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-		
-		
+			
 		while (scanner.hasNextLine()) {
 			String commit = scanner.nextLine();
 			String authorName = scanner.nextLine();

@@ -14,16 +14,16 @@ jpeg("project_exp_vul_hist.png")
 vulnerable <- projectAnalysis$ProjCommits[projectAnalysis$VCC=="Yes"]
 neutral <- projectAnalysis$ProjCommits[projectAnalysis$VCC=="No"]
 
-hist(vulnerable, breaks=20, col="red", main="Project Experience (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
-axis(1, at=seq(0,500,20))
+hist(vulnerable, breaks=10, col="red", main="Project Experience (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
+axis(2, at=seq(0,200,10)) 
+axis(1, at=seq(0,3000,100))
 dev.off()
 
 jpeg("project_exp_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="Project Experience (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
-axis(1, at=seq(0,10,1))
+axis(2, at=seq(0,30000,500)) 
+axis(1, at=seq(0,3000,100))
 dev.off()
 ###################################
 
@@ -35,14 +35,14 @@ neutral <- projectAnalysis$TimePeriod[projectAnalysis$VCC=="No"]
 jpeg("project_tp_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="Time Period Experience (Vuln) Histogram", freq=TRUE, xlab="No of Years", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,500,20))
+axis(1, at=seq(0,100,1))
 dev.off()
 
 jpeg("project_tp_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="Time Period Experience (Neut) Histogram", freq=TRUE, xlab="No of Years", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,10,1))
+axis(1, at=seq(0,100,1))
 dev.off()
 
 
@@ -54,14 +54,14 @@ neutral <- projectAnalysis$MajorRel[projectAnalysis$VCC=="No"]
 jpeg("project_majorrel_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="MajorRel Experience (Vuln) Histogram", freq=TRUE, xlab="No of Major Releases", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,500,20))
+axis(1, at=seq(0,50,1))
 dev.off()
 
 jpeg("project_majorrel_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="MajorRel Experience (Neut) Histogram", freq=TRUE, xlab="No of Major Releases", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,10,1))
+axis(1, at=seq(0,20,1))
 dev.off()
 
 
@@ -73,14 +73,14 @@ neutral <- projectAnalysis$SecFix[projectAnalysis$VCC=="No"]
 jpeg("project_secfix_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="Security Fix Experience (Vuln) Histogram", freq=TRUE, xlab="No of Fix", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,500,20))
+axis(1, at=seq(0,500,1))
 dev.off()
 
 jpeg("project_secfix_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="Security Fix Experience (Neut) Histogram", freq=TRUE, xlab="No of Fix", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,10,1))
+axis(1, at=seq(0,500,1))
 dev.off()
 
 ###### Project 30Day########
@@ -97,7 +97,7 @@ jpeg("project_ttday_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="Project Recent 30-Day (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,10,1))
+axis(1, at=seq(0,500,10))
 dev.off()
 
 
@@ -115,7 +115,7 @@ jpeg("project_stday_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="Project Recent 60-Day (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,10,1))
+axis(1, at=seq(0,500,10))
 dev.off()
 
 
@@ -125,7 +125,7 @@ vulnerable <- projectAnalysis$ntDay[projectAnalysis$VCC=="Yes"]
 neutral <- projectAnalysis$ntDay[projectAnalysis$VCC=="No"]
 jpeg("project_ntday_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="Project Recent 90-Day (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
+axis(2, at=seq(0,100,10)) 
 axis(1, at=seq(0,500,20))
 dev.off()
 
@@ -133,6 +133,6 @@ jpeg("project_ntday_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="Project Recent 90-Day (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
 axis(2) 
-axis(1, at=seq(0,10,1))
+axis(1, at=seq(0,500,20))
 dev.off()
 

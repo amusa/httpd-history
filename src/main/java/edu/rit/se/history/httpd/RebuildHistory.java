@@ -75,7 +75,7 @@ public class RebuildHistory {
 		/* --- LOAD STUFF --- */
 		// loadCVEs(dbUtil, props);
 		///loadCVEToGit();
-		///loadGitLog();
+		loadGitLog();
 		//loadComponents();
 		///loadReleaseHistory();
 		// loadCVEToGit(dbUtil, props);
@@ -87,14 +87,14 @@ public class RebuildHistory {
 		//updateGitlogfilesComponent();
 		//updateSLOC();
 		///computeRepoLog();
-		computeRecentChurn();
+		//computeRecentChurn();
 		/* --- VERIFY --- */
-		verify();
+		//verify();
 		/* --- ANALYZE --- */
-		timeline();
-		visualizeVulnerabilitySeasons();
-		generateCounterparts();
-		buildAnalysis();
+		//timeline();
+		//visualizeVulnerabilitySeasons();
+		//generateCounterparts();
+		//buildAnalysis();
 		// prediction();
 		log.info("Done.");
 	}
@@ -270,7 +270,7 @@ public class RebuildHistory {
 	}
 	
 	private void optimizeGitlogfiles() throws SQLException {		
-		new GitOptimizer().optimize(dbUtil);		
+		//new GitOptimizer().optimize(dbUtil);		
 	}
 
 }

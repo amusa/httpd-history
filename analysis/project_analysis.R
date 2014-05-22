@@ -7,7 +7,10 @@ setwd("C:\\data\\httpd\\experience_report\\new\\")
 association <- function(vulnerable, neutral){
   cat("Vuln. Mean:\t",mean(vulnerable, na.rm=TRUE),"\n")
   cat("Neutral Mean:\t",mean(neutral, na.rm=TRUE),"\n")
-  wilcox.test(vulnerable,neutral)
+  cat("Vuln. Median:\t",median(vulnerable, na.rm=TRUE),"\n")
+  cat("Neutral Median:\t",median(neutral, na.rm=TRUE),"\n")
+
+  wilcox.test(vulnerable,neutral) 
 }
 
 

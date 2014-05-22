@@ -13,14 +13,14 @@ neutral <- fileAnalysis$FileCommits[fileAnalysis$VCC=="No"]
 
 jpeg("file_exp_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="File Experience (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
+axis(2,at=seq(0,200,10)) 
 axis(1, at=seq(0,500,20))
 dev.off()
 
 jpeg("file_exp_neu_hist.png")
-hist(neutral, breaks=10, col="blue", main="File Experience (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
-axis(1, at=seq(0,10,1))
+hist(neutral, breaks=20, col="blue", main="File Experience (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
+axis(2, at=seq(0,30000,1000)) 
+axis(1, at=seq(0,500,20))
 dev.off()
 ###################################
 
@@ -32,14 +32,16 @@ neutral <- fileAnalysis$Dir[fileAnalysis$VCC=="No"]
 
 jpeg("dir_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="Directory Experience (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
+axis(2, at=seq(0,200,10)) 
 axis(1, at=seq(0,500,20))
 dev.off()
 
 jpeg("dir_neu_hist.png")
-hist(neutral, breaks=10, col="blue", main="Directory Experience (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
-axis(1, at=seq(0,10,1))
+hist(neutral, breaks=20, col="blue", main="Directory Experience (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
+axis(2, at=seq(0,30000,500)) 
+#axis(1, at=seq(0,10,1))
+axis(1, at=seq(0,500,20))
+
 dev.off()
 
 
@@ -50,16 +52,16 @@ vulnerable <- fileAnalysis$ttDay[fileAnalysis$VCC=="Yes"]
 neutral <- fileAnalysis$ttDay[fileAnalysis$VCC=="No"]
 
 jpeg("file_ttday_vul_hist.png")
-hist(vulnerable, breaks=20, col="red", main="File Recent 30-Day (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
+hist(vulnerable, breaks=10, col="red", main="File Recent 30-Day (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
+axis(2, at=seq(0,200,10)) 
 axis(1, at=seq(0,500,20))
 dev.off()
 
 jpeg("file_ttday_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="File Recent 30-Day (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
-axis(1, at=seq(0,10,1))
+axis(2, at=seq(0,30000,500)) 
+axis(1, at=seq(0,500,20))
 dev.off()
 
 
@@ -70,15 +72,15 @@ neutral <- fileAnalysis$stDay[fileAnalysis$VCC=="No"]
 
 jpeg("file_stday_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="File Recent 60-Day (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
+axis(2, at=seq(0,200,10)) 
 axis(1, at=seq(0,500,20))
 dev.off()
 
 jpeg("file_stday_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="File Recent 60-Day (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
-axis(1, at=seq(0,10,1))
+axis(2, at=seq(0,30000,500)) 
+axis(1, at=seq(0,500,20))
 dev.off()
 
 
@@ -88,14 +90,14 @@ vulnerable <- fileAnalysis$ntDay[fileAnalysis$VCC=="Yes"]
 neutral <- fileAnalysis$ntDay[fileAnalysis$VCC=="No"]
 jpeg("file_ntday_vul_hist.png")
 hist(vulnerable, breaks=20, col="red", main="File Recent 90-Day (Vuln) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
+axis(2, at=seq(0,200,10)) 
 axis(1, at=seq(0,500,20))
 dev.off()
 
 jpeg("file_ntday_neu_hist.png")
 
 hist(neutral, breaks=10, col="blue", main="File Recent 90-Day (Neut) Histogram", freq=TRUE, xlab="No of Commits", labels=TRUE, axes=FALSE) 
-axis(2) 
-axis(1, at=seq(0,10,1))
+axis(2, at=seq(0,30000,500)) 
+axis(1, at=seq(0,500,20))
 dev.off()
 
